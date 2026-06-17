@@ -1,4 +1,18 @@
-export function Task({ description, completed, created }) {
+import { useState } from "react";
+
+export function Task({
+  id,
+  description,
+  completed,
+  created,
+  deleteTask,
+  toggleTask,
+  editing,
+  startEditing,
+  saveTask,
+}) {
+  const [editValue, setEditValue] = useState(description);
+
   return (
     <>
       <div className="view">
@@ -6,16 +20,33 @@ export function Task({ description, completed, created }) {
           className="toggle"
           type="checkbox"
           checked={completed}
-          readOnly
+          onChange={() => toggleTask(id)}
         />
         <label>
           <span className="description">{description}</span>
           <span className="created">{created.toLocaleDateString()}</span>
         </label>
-        <button className="icon icon-edit"></button>
-        <button className="icon icon-destroy"></button>
+        <button
+          className="icon icon-edit"
+          onClick={() => startEditing(id)}
+        ></button>
+        <button
+          className="icon icon-destroy"
+          onClick={() => deleteTask(id)}
+        ></button>
       </div>
-      <input type="text" className="edit" value={description} readOnly />
+      <input
+        type="text"
+        className="edit"
+        value={editValue}
+        autoFocus
+        onChange={(e) => setEditValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            saveTask(id, editValue);
+          }
+        }}
+      />
     </>
   );
 }
