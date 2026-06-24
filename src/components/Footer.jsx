@@ -1,11 +1,20 @@
 import { TasksFilter } from "./TasksFilter";
 
-export function Footer() {
+export function Footer({
+  activeTasksCount,
+  filter,
+  setFilter,
+  clearCompleted,
+}) {
   return (
     <footer className="footer">
-      <span className="todo-count">1 items left</span>
-      <TasksFilter />
-      <button className="clear-completed">Clear completed</button>
+      <span className="todo-count">{activeTasksCount} items left</span>
+
+      <TasksFilter filter={filter} setFilter={setFilter} />
+
+      <button className="clear-completed" onClick={clearCompleted}>
+        Clear completed
+      </button>
     </footer>
   );
 }
