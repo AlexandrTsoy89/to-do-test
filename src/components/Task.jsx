@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import PropTypes from "prop-types";
 
 export function Task({
   id,
@@ -24,7 +26,9 @@ export function Task({
         />
         <label>
           <span className="description">{description}</span>
-          <span className="created">{created.toLocaleDateString()}</span>
+          <span className="created">
+            created {formatDistanceToNow(created, { addSuffix: true })}
+          </span>
         </label>
         <button
           className="icon icon-edit"
@@ -42,11 +46,30 @@ export function Task({
         autoFocus
         onChange={(e) => setEditValue(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            saveTask(id, editValue);
+          if (e.key === "Enter" && editValue.trim()) {
+            saveTask(id, editValue.trim());
+          }
+          if (e.key === "Escape") {
+            setEditValue(description);
           }
         }}
       />
     </>
   );
 }
+
+Task.propTypes = {
+  id: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  completed: PropTypes.bool.isRequired,
+  created: PropTypes.instanceOf(Date).isRequired,
+  deleteTask: PropTypes.func.isRequired,
+  toggleTask: PropTypes.func.isRequired,
+  editing: PropTypes.bool.isRequired,
+  startEditing: PropTypes.func.isRequired,
+  saveTask: PropTypes.func.isRequired,
+};
+
+Task.defaultProps = {
+  editing: false,
+};

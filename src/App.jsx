@@ -35,7 +35,7 @@ function App() {
   const [filter, setFilter] = useState("all");
 
   function handleDeleteTask(id) {
-    setTaskList(taskList.filter((task) => task.id !== id));
+    setTaskList((tasks) => tasks.filter((task) => task.id !== id));
   }
 
   function toggleTask(id) {
